@@ -12,7 +12,7 @@ const key = 'AIzaSyDYp1te-bQEhWE9P9yehRE3biB7LpSEh4U'
 const language = 'en'; 
 const country = 'country:in|country:bt|country:np|country:pk|country:af';
 
-const GoogleComponent = props => {
+const SearchComponent = props => {
     console.log("props", props)
     const [result, setresult] = useState([]);
     const [city, setcity] = useState('');
@@ -180,4 +180,4 @@ const GoogleComponent = props => {
     );
 };
 
-export default GoogleComponent
+export default SearchComponent

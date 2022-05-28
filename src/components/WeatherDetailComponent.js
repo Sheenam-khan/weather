@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import './App.css'; 
-import moment from 'moment'
-import SearchComponent from './components/SearchComponent'
-import WeatherDetailComponent from './components/WeatherDetailComponent';
+import React from 'react';
 import * as Highcharts from 'highcharts';
+import HighchartsReact from "highcharts-react-official";
+import moment from 'moment' 
 
-function App() {
-    const [weatherDetails, setWeatherDetails] = useState({})
-    const [loader, setLoader] = useState(true)
+const  WeatherDetailComponent=({weatherDetails})=>{ 
 
     const options = {
         chart: {
@@ -148,26 +144,60 @@ function App() {
         }]
     }
 
-    const changeWeatherDetails = (value) => {
-        setWeatherDetails(value)
-    }
-    
+   
     return (
-        <div className="App">
+        <>
+            <div class="future-forecast">
 
-            <SearchComponent
-                changeWeatherDetails={changeWeatherDetails}
-                placeholder="Location"
-                setLoader={setLoader}
-            />
-           <WeatherDetailComponent
-           weatherDetails={weatherDetails}
-           options={options}
-           options2={options2}
-           />
 
-        </div>
+                <div class="weather-forecast" id="weather-forecast">
+                    {weatherDetails?.weeklyWeather?.slice(0, -1)?.map((weather, index) =>
+                        <div class={index == 0 ? 'weather-forecast-item-now' : 'weather-forecast-item'}>
+                            <div class="day">{moment.unix(weather.dt).format("ddd")}</div>   <h4>
+                                <span>{weather.temp.max.toFixed(0)}&deg;C</span>
+
+                                <span>{weather.temp.min.toFixed(0)}&deg;C</span>
+                            </h4>
+                            <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                                alt="weather icon" class="w-icon" />
+                            <h5>{weather.weather[0].description}</h5>
+                        </div>
+                    )}
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="left">
+                    <h1>{weatherDetails?.currentWeather?.temp?.toFixed(0)}&deg;C</h1>
+                    <img src={`https://openweathermap.org/img/wn/${weatherDetails?.currentWeather?.weather[0].icon}@2x.png`} alt="weather icon" class="w-icon" />
+                </div>
+
+                <div class="right">
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={options}
+                        containerProps={{ style: {} }}
+                    />
+                </div>
+
+                <div className='today'>
+                    <div className="today__left-content" style={{ background: "#f5faff" }}><h3>Pressure</h3> <span>{weatherDetails?.currentWeather?.pressure?.toFixed(0)}hpa</span> </div>
+                    <div className="today__right-content"><h3>Humidity</h3> <span>{weatherDetails?.currentWeather?.humidity?.toFixed(0)}%</span></div>
+                </div>
+                <div className='today' >
+                    <div className="today__left-content" style={{ background: "white" }}><h3>Sunrise</h3> <span>{moment.unix(weatherDetails?.currentWeather?.sunrise).format("LT")}</span> </div>
+                    <div className="today__right-content" style={{ background: "white" }}><h3>Sunset</h3> <span>{moment.unix(weatherDetails?.currentWeather?.sunset).format("LT")}</span></div>
+                </div>
+                <HighchartsReact
+                    highcharts={Highcharts}
+                    options={options2}
+                    containerProps={{ style: {} }}
+                />
+            </div>
+
+            </>
     );
 }
 
-export default App;
+export default WeatherDetailComponent;

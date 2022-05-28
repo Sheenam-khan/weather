@@ -1,6 +1,6 @@
 Stock-market-dashboard
 
-<img src="src/assets/images/weather.PNG" width="200"/>
+<img src="src/images/weather.PNG" width="200"/>
 
 To Run this project 
 
