@@ -1,4 +1,4 @@
-Stock-market-dashboard
+Weather
 
 <img src="src/assets/images/weather.PNG" width="200"/>
 
